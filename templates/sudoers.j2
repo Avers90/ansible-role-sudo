@@ -1,0 +1,8 @@
+# Managed by Ansible - DO NOT EDIT MANUALLY
+{% if item.name is defined %}
+{% if item.type | default('user') == 'group' %}
+%{{ item.name }} ALL=(ALL) {% if item.nopasswd | default(false) %}NOPASSWD:{% endif %}{{ item.commands | default('ALL') }}
+{% else %}
+{{ item.name }} ALL=(ALL) {% if item.nopasswd | default(false) %}NOPASSWD:{% endif %}{{ item.commands | default('ALL') }}
+{% endif %}
+{% endif %}

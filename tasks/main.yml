@@ -1,0 +1,50 @@
+---
+- name: sudo | Install sudo package (Debian)
+  ansible.builtin.apt:
+    name: sudo
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+  when: ansible_os_family == "Debian"
+
+- name: sudo | Configure sudoers for users
+  ansible.builtin.template:
+    src: sudoers.j2
+    dest: "/etc/sudoers.d/{{ item.name }}"
+    owner: root
+    group: root
+    mode: "0440"
+    validate: "visudo -cf %s"
+  loop: "{{ sudo_users }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when: sudo_users | length > 0
+
+- name: sudo | Configure sudoers for groups
+  ansible.builtin.template:
+    src: sudoers.j2
+    dest: "/etc/sudoers.d/group_{{ item.name }}"
+    owner: root
+    group: root
+    mode: "0440"
+    validate: "visudo -cf %s"
+  loop: "{{ sudo_groups }}"
+  loop_control:
+    label: "{{ item.name }}"
+  vars:
+    item: "{{ item | combine({'type': 'group'}) }}"
+  when: sudo_groups | length > 0
+
+- name: sudo | Remove sudoers for users
+  ansible.builtin.file:
+    path: "/etc/sudoers.d/{{ item }}"
+    state: absent
+  loop: "{{ sudo_remove_users }}"
+  when: sudo_remove_users | length > 0
+
+- name: sudo | Remove sudoers for groups
+  ansible.builtin.file:
+    path: "/etc/sudoers.d/group_{{ item }}"
+    state: absent
+  loop: "{{ sudo_remove_groups }}"
+  when: sudo_remove_groups | length > 0

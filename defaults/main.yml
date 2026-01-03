@@ -1,0 +1,14 @@
+---
+sudo_users: []
+#  - name: deploy
+#    nopasswd: true
+#    commands: ALL
+
+sudo_groups: []
+#  - name: wheel
+#    nopasswd: false
+#    commands: ALL
+
+# Удалить sudoers файлы для этих пользователей/групп
+sudo_remove_users: []
+sudo_remove_groups: []

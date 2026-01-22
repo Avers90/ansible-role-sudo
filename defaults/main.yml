@@ -9,6 +9,6 @@ sudo_groups: []
 #    nopasswd: false
 #    commands: ALL
 
-# Удалить sudoers файлы для этих пользователей/групп
+# Remove sudoers files for these users/groups
 sudo_remove_users: []
 sudo_remove_groups: []

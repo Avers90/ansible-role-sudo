@@ -1,11 +1,15 @@
 ---
-- name: sudo | Install sudo package (Debian)
+- name: sudo | Fail if distro is not supported
+  ansible.builtin.fail:
+    msg: "Distribution '{{ ansible_distribution }}' is not supported. Supported: Debian, Ubuntu"
+  when: ansible_distribution not in ['Debian', 'Ubuntu']
+
+- name: sudo | Install sudo package
   ansible.builtin.apt:
     name: sudo
     state: present
     update_cache: true
     cache_valid_time: 3600
-  when: ansible_os_family == "Debian"
 
 - name: sudo | Configure sudoers for users
   ansible.builtin.template:

@@ -4,7 +4,7 @@ Configure sudo access for users and groups.
 
 ## Requirements
 
-- Debian/Ubuntu
+- Debian (bullseye, bookworm), Ubuntu (focal, jammy, noble, resolute)
 
 ## Role Variables
 
